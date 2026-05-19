@@ -56,14 +56,15 @@ def get_recycling_tips(waste_type):
         return f"Error Gemini: {e}"
 
 # LOAD MODEL
-MODEL_PATH = 'best_custom.h5'
+MODEL_PATH = 'best_model_custom.keras'
+
 
 CLASS_NAMES = ['ampas kopi', 'botol air plastik', 'botol soda plastik', 'gelas kertas',
                'gelas styrofoam', 'kaleng aerosol', 'kaleng makanan baja',
                'kantong belanja plastik','kantong teh', 'kemasan kardus', 'kertas kantor',
                'koran', 'kotak kardus', 'kulit telur', 'limbah makanan', 'majalah',
-               'pakaian', 'sedotan plastik', 'sepatu', 'stoples kaca makanan'
-]
+               'pakaian', 'sedotan plastik', 'sepatu', 'stoples kaca makanan']
+
 
 print("Memuat model...")
 
