@@ -56,7 +56,7 @@ def get_recycling_tips(waste_type):
         return f"Error Gemini: {e}"
 
 # LOAD MODEL
-MODEL_PATH = 'best_model_custom.keras'
+MODEL_PATH = 'best_model_custom.h5'
 
 CLASS_NAMES = ['ampas kopi', 'botol air plastik', 'botol soda plastik', 'gelas kertas',
                'gelas styrofoam', 'kaleng aerosol', 'kaleng makanan baja',
@@ -95,7 +95,7 @@ async def predict(file: UploadFile = File(...)):
         # PREPROCESS
         image = image.resize((224, 224))
 
-        img_array = np.array(image)
+        img_array = np.array(image) / 255.0
 
         img_array = np.expand_dims(img_array, axis=0)
 
@@ -142,11 +142,3 @@ async def predict(file: UploadFile = File(...)):
 def _print_startup_info():
     # helpful hint when starting the app from python: remind which host to bind to
     print("FastAPI startup event: use host 0.0.0.0 to expose to LAN (uvicorn --host 0.0.0.0 --port 8080)")
-
-
-if __name__ == "__main__":
-    # This lets you run `python main.py` to start the server bound to 0.0.0.0
-    # Use reload=False in production. reload=True may not work perfectly when run this way.
-    import uvicorn
-
-    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
