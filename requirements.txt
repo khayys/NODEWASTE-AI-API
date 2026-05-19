@@ -1,7 +1,10 @@
 fastapi==0.136.1
-uvicorn==0.46.0
-tensorflow-cpu==2.19.0
+google-generativeai==0.8.6
+keras==3.13.2
 numpy==2.0.2
 pillow==11.3.0
 python-multipart==0.0.20
-google-generativeai==0.8.6
+tensorflow-cpu==2.20.0
+uvicorn==0.46.0
+
+
