@@ -67,7 +67,10 @@ CLASS_NAMES = ['ampas kopi', 'botol air plastik', 'botol soda plastik', 'gelas k
 
 print("Memuat model...")
 
-model = tf.keras.models.load_model(MODEL_PATH)
+model = tf.keras.models.load_model(
+    MODEL_PATH,
+    compile=False
+)
 
 print("Model berhasil dimuat!")
 
