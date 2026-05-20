@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import tensorflow as tf
 import numpy as np
+from dotenv import load_dotenv
 
 from PIL import Image
 
@@ -28,7 +29,10 @@ app.add_middleware(
 )
 
 # GEMINI CONFIG
-API_KEY = "AIzaSyCej6FSK72kXgLtU6dNS3sjdpWv75NOhvE" 
+
+load_dotenv()
+
+API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=API_KEY)
 
 # FUNCTION GENERATIVE AI
