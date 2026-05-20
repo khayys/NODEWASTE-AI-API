@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from streamlit import image
 import tensorflow as tf
 import numpy as np
 from dotenv import load_dotenv
@@ -99,10 +100,10 @@ async def predict(file: UploadFile = File(...)):
         ).convert("RGB")
 
         # PREPROCESS
+        from tensorflow.keras.applications.efficientnet import preprocess_input
         image = image.resize((224, 224))
-
-        img_array = np.array(image) / 255.0
-
+        img_array = np.array(image)
+        img_array = preprocess_input(img_array)
         img_array = np.expand_dims(img_array, axis=0)
 
         # PREDICTION
