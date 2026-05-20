@@ -8,7 +8,8 @@ import numpy as np
 from PIL import Image
 
 import io
-
+import os
+import uvicorn
 import google.generativeai as genai
 
 # FASTAPI INIT
@@ -141,8 +142,6 @@ async def predict(file: UploadFile = File(...)):
         }
 
 
-# Optional: allow running the app directly with `python main.py` and bind to all interfaces
-@app.on_event("startup")
-def _print_startup_info():
-    # helpful hint when starting the app from python: remind which host to bind to
-    print("FastAPI startup event: use host 0.0.0.0 to expose to LAN (uvicorn --host 0.0.0.0 --port 8080)")
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))  # Ambil PORT dari Railway
+    uvicorn.run(app, host="0.0.0.0", port=port)
