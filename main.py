@@ -1,14 +1,13 @@
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from streamlit import image
 import tensorflow as tf
 import numpy as np
 from dotenv import load_dotenv
 from PIL import Image
 import io
 import os
-import uvicorn
+
 import google.generativeai as genai
 
 # FASTAPI INIT
