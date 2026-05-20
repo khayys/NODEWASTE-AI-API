@@ -121,8 +121,6 @@ async def predict(file: UploadFile = File(...)):
 
         # PREDICTION
         predictions = model.predict(img_array)
-        print("\n===== HASIL PREDIKSI =====")
-        for i, prob in enumerate(predictions[0]):print(CLASS_NAMES[i], ":", float(prob))
 
         predicted_class_index = np.argmax(predictions)
 
