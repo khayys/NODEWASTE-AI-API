@@ -61,13 +61,26 @@ def get_recycling_tips(waste_type):
 # LOAD MODEL
 MODEL_PATH = 'best_model_custom.keras'
 
-
-CLASS_NAMES = ['ampas kopi', 'botol air plastik', 'botol soda plastik', 'gelas kertas',
-               'gelas styrofoam', 'kaleng aerosol', 'kaleng makanan baja',
-               'kantong belanja plastik','kantong teh', 'kemasan kardus', 'kertas kantor',
-               'koran', 'kotak kardus', 'kulit telur', 'limbah makanan', 'majalah',
-               'pakaian', 'sedotan plastik', 'sepatu', 'stoples kaca makanan']
-
+CLASS_NAMES = [
+    'ampas kopi',
+    'botol plastik',
+    'gelas kertas',
+    'gelas styrofoam',
+    'kaleng aerosol',
+    'kaleng makanan baja',
+    'kantong belanja plastik',
+    'kantong teh',
+    'kardus',
+    'kertas kantor',
+    'koran',
+    'kulit telur',
+    'limbah makanan',
+    'majalah',
+    'pakaian',
+    'sedotan plastik',
+    'sepatu',
+    'stoples kaca makanan'
+]
 
 print("Memuat model...")
 
@@ -108,6 +121,8 @@ async def predict(file: UploadFile = File(...)):
 
         # PREDICTION
         predictions = model.predict(img_array)
+        print("\n===== HASIL PREDIKSI =====")
+        for i, prob in enumerate(predictions[0]):print(CLASS_NAMES[i], ":", float(prob))
 
         predicted_class_index = np.argmax(predictions)
 
