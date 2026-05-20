@@ -1,13 +1,10 @@
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-
 import tensorflow as tf
 import numpy as np
 from dotenv import load_dotenv
-
 from PIL import Image
-
 import io
 import os
 import uvicorn
