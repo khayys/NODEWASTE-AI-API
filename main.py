@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import tensorflow as tf
@@ -7,8 +6,8 @@ from dotenv import load_dotenv
 from PIL import Image
 import io
 import os
-
-import google.generativeai as genai
+from google import genai
+import uvicorn
 
 # FASTAPI INIT
 app = FastAPI(
@@ -25,37 +24,41 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# GEMINI CONFIG
-
+# LOAD ENV
 load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=API_KEY)
+
+# GEMINI CLIENT
+client = genai.Client(
+    api_key=API_KEY
+)
 
 # FUNCTION GENERATIVE AI
 def get_recycling_tips(waste_type):
 
     try:
 
-        model_gemini = genai.GenerativeModel(
-    'gemini-2.5-flash')
-
         prompt = f"""
-        ● Jenis sampah: {waste_type}
-        ● Kategori sampah: (anorganik/organik/berbahaya)
-        ● Klasifikasi jenis sampah: (dapat didaur ulang/dibakar/tidak dibakar/berbahaya)
-        ● Panduan penanganan sampah: (dalam bullet point yang singkat)
-        ● Letakkan di kantong plastik (dibakar/tidak dibakar/daur ulang/berbahaya)
+        Jenis sampah: {waste_type}
 
+        Berikan:
+        - kategori sampah
+        - apakah bisa didaur ulang
+        - panduan penanganan singkat
+        - jenis kantong pembuangan
         """
 
-        response = model_gemini.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt
+        )
 
         return response.text
 
     except Exception as e:
 
-        return f"Error Gemini: {e}"
+        return f"Error Gemini: {str(e)}"
 
 # LOAD MODEL
 MODEL_PATH = 'best_model_custom.keras'
@@ -113,12 +116,16 @@ async def predict(file: UploadFile = File(...)):
 
         # PREPROCESS
         from tensorflow.keras.applications.efficientnet import preprocess_input
+
         image = image.resize((224, 224))
+
         img_array = np.array(image)
+
         img_array = preprocess_input(img_array)
+
         img_array = np.expand_dims(img_array, axis=0)
 
-        # PREDICTION
+        # PREDICT
         predictions = model.predict(img_array)
 
         predicted_class_index = np.argmax(predictions)
@@ -129,7 +136,7 @@ async def predict(file: UploadFile = File(...)):
             predictions[0][predicted_class_index]
         )
 
-        # GEMINI RECOMMENDATION
+        # GEMINI
         recommendation = get_recycling_tips(
             predicted_class
         )
@@ -154,7 +161,13 @@ async def predict(file: UploadFile = File(...)):
             "error": str(e),
             "status": "failed"
         }
-    
+
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))  # Ambil PORT dari Railway
-    uvicorn.run(app, host="0.0.0.0", port=port)
+
+    port = int(os.getenv("PORT", 8000))
+
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=port
+    )
