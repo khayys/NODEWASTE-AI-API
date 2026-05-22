@@ -143,16 +143,19 @@ async def predict(file: UploadFile = File(...)):
 
         # RESPONSE
         return {
-
-            "filename": file.filename,
-
-            "predicted_class": predicted_class,
-
-            "confidence": confidence,
-
-            "recommendation": recommendation,
-
-            "status": "success"
+            "classification": {
+                "filename": file.filename,
+                
+                "predicted_class": predicted_class,
+                
+                "confidence": confidence,
+                
+                "status": "success"
+            },
+            
+            "recommendation": {
+                "text": recommendation,
+            }
         }
 
     except Exception as e:
