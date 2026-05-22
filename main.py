@@ -41,12 +41,10 @@ def get_recycling_tips(waste_type):
 
         prompt = f"""
         Jenis sampah: {waste_type}
-
-        Berikan:
-        - kategori sampah
-        - apakah bisa didaur ulang
-        - panduan penanganan singkat
-        - jenis kantong pembuangan
+        Kategori sampah: (organik, anorganik, atau berbahaya)
+        Klasifikasi jenis sampah: (dapat didaur ulang/dibakar/tidak dibakar/berbahaya)
+        Panduan penanganan sampah: (dalam bullet point yang singkat)
+        Letakkan di kantong plastik (dibakar/daur ulang/tidak dibakar/berbahaya)
         """
 
         response = client.models.generate_content(
