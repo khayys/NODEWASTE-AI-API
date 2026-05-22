@@ -50,7 +50,7 @@ def get_recycling_tips(waste_type):
         """
 
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=prompt
         )
 
