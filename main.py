@@ -8,6 +8,7 @@ import io
 import os
 import requests
 import uvicorn
+import json
 
 # FASTAPI INIT
 app = FastAPI(
@@ -29,6 +30,7 @@ load_dotenv()
 
 API_KEY = os.getenv("OR_API_KEY").strip()
 
+# GEN AI 
 def get_recycling_tips(waste_type):
 
     try:
@@ -41,14 +43,38 @@ def get_recycling_tips(waste_type):
         }
 
         prompt = f"""
-        - Jenis sampah: {waste_type} 
-        - Kategori sampah: (organik, anorganik, atau berbahaya) 
-        - Klasifikasi jenis sampah: (dapat didaur ulang/dibakar/tidak dibakar/berbahaya) 
-        - Panduan penanganan sampah: (dalam bullet point yang singkat) 
-        - Letakkan di kantong plastik (dibakar/daur ulang/tidak dibakar/berbahaya)
+        Jenis sampah: {waste_type}
+
+        Berikan jawaban HANYA dalam format JSON valid berikut:
+
+        {{
+            "kategori": "...",
+            "jenis": "...",
+            "panduan": [
+                "...",
+                "...",
+                "..."
+            ],
+            "kantong": "..."
+        }}
+
+        Rules:
+        - kategori hanya boleh:
+          organik / anorganik / berbahaya
+
+        - jenis hanya boleh:
+          didaur ulang / dibakar / tidak dibakar / berbahaya
+
+        - kantong hanya boleh:
+          dibakar / daur ulang / tidak dibakar / berbahaya
+
+        - jangan tambahkan markdown
+        - jangan tambahkan penjelasan lain
+        - output HARUS valid JSON
         """
 
         payload = {
+
             "model": "meta-llama/llama-3.1-8b-instruct",
 
             "messages": [
@@ -72,11 +98,24 @@ def get_recycling_tips(waste_type):
 
         print(data)
 
-        return data["choices"][0]["message"]["content"]
+        if "choices" not in data:
+            return {
+                "error": data
+            }
+
+        content = data["choices"][0]["message"]["content"]
+
+        print(content)
+
+        parsed = json.loads(content)
+
+        return parsed
 
     except Exception as e:
 
-        return f"Error OpenRouter: {str(e)}"
+        return {
+            "error": f"Error OpenRouter: {str(e)}"
+        }
     
 # LOAD MODEL
 MODEL_PATH = 'best_model_custom.keras'
@@ -163,17 +202,11 @@ async def predict(file: UploadFile = File(...)):
         return {
             "classification": {
                 "filename": file.filename,
-                
                 "predicted_class": predicted_class,
-                
                 "confidence": confidence,
-                
                 "status": "success"
             },
-            
-            "recommendation": {
-                "text": recommendation,
-            }
+            "recommendation": recommendation
         }
 
     except Exception as e:
