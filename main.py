@@ -49,7 +49,7 @@ def get_recycling_tips(waste_type):
         """
 
         payload = {
-            "model": "deepseek/deepseek-chat-v3-0324:free",
+            "model": "meta-llama/llama-3.1-8b-instruct",
 
             "messages": [
                 {
