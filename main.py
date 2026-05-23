@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from PIL import Image
 import io
 import os
-from google import genai
+import requests
 import uvicorn
 
 # FASTAPI INIT
@@ -27,36 +27,51 @@ app.add_middleware(
 # LOAD ENV
 load_dotenv()
 
-API_KEY = os.getenv("GEMINI_API_KEY").strip()
+API_KEY = os.getenv("HF_API_KEY").strip()
 
-# GEMINI CLIENT
-client = genai.Client(
-    api_key=API_KEY
-)
-
-# FUNCTION GENERATIVE AI
 def get_recycling_tips(waste_type):
 
     try:
 
+        API_URL = "https://router.huggingface.co/v1/chat/completions"
+
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        }
+
         prompt = f"""
-        Jenis sampah: {waste_type}
-        Kategori sampah: (organik, anorganik, atau berbahaya)
-        Klasifikasi jenis sampah: (dapat didaur ulang/dibakar/tidak dibakar/berbahaya)
-        Panduan penanganan sampah: (dalam bullet point yang singkat)
-        Letakkan di kantong plastik (dibakar/daur ulang/tidak dibakar/berbahaya)
+        - Jenis sampah: {waste_type}
+        - Kategori sampah: (organik, anorganik, atau berbahaya) 
+        - Klasifikasi jenis sampah: (dapat didaur ulang/dibakar/tidak dibakar/berbahaya) 
+        - Panduan penanganan sampah: (dalam bullet point yang singkat) 
+        - Letakkan di kantong plastik (dibakar/daur ulang/tidak dibakar/berbahaya)
         """
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
+        payload = {
+            "model": "meta-llama/Llama-3.1-8B-Instruct",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            "max_tokens": 300
+        }
+
+        response = requests.post(
+            API_URL,
+            headers=headers,
+            json=payload
         )
 
-        return response.text
+        data = response.json()
+
+        return data["choices"][0]["message"]["content"]
 
     except Exception as e:
 
-        return f"Error Gemini: {str(e)}"
+        return f"Error HuggingFace: {str(e)}"
 
 # LOAD MODEL
 MODEL_PATH = 'best_model_custom.keras'
