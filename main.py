@@ -48,24 +48,25 @@ def get_recycling_tips(waste_type):
         Berikan jawaban HANYA dalam format JSON valid berikut:
 
         {{
-            "kategori": "...",
-            "jenis": "...",
-            "panduan": [
+            "Kategori sampah": "...",
+            "Klasifikasi jenis sampah": "...",
+            "panduan penanganan sampah": [
+                "...",
                 "...",
                 "...",
                 "..."
             ],
-            "kantong": "..."
+            "Letakkan di kantong": "..."
         }}
 
         Rules:
-        - kategori hanya boleh:
+        - kategori sampah hanya boleh:
           organik / anorganik / berbahaya
 
-        - jenis hanya boleh:
+        - klasifikasi jenis sampah hanya boleh:
           didaur ulang / dibakar / tidak dibakar / berbahaya
 
-        - kantong hanya boleh:
+        - letakkan di kantong hanya boleh:
           dibakar / daur ulang / tidak dibakar / berbahaya
 
         - jangan tambahkan markdown
