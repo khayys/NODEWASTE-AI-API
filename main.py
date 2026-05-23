@@ -66,7 +66,7 @@ def get_recycling_tips(waste_type):
         - klasifikasi jenis sampah hanya boleh:
           daur ulang / dibakar / tidak dibakar / berbahaya
         
-        - panduan penanganan sampah dalam bullet point yang menjelaskan cara menangani sampah tersebut, seperti memilahnya, membersihkannya, atau tips lainnya. Untuk panduan bebas berjumlah berapapun
+        - panduan penanganan sampah dalam bullet point yang menjelaskan cara menangani sampah tersebut agar proses selanjutnya lebih mudah. Untuk panduan bebas berjumlah berapapun
         - letakkan di kantong hanya boleh:
           dibakar / daur ulang / tidak dibakar / berbahaya
 
