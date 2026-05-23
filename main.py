@@ -64,8 +64,9 @@ def get_recycling_tips(waste_type):
           organik / anorganik / berbahaya
 
         - klasifikasi jenis sampah hanya boleh:
-          didaur ulang / dibakar / tidak dibakar / berbahaya
-
+          daur ulang / dibakar / tidak dibakar / berbahaya
+        
+        - panduan penanganan sampah dalam bullet point yang menjelaskan cara menangani sampah tersebut, seperti memilahnya, membersihkannya, atau tips lainnya. Untuk panduan bebas berjumlah berapapun
         - letakkan di kantong hanya boleh:
           dibakar / daur ulang / tidak dibakar / berbahaya
 
