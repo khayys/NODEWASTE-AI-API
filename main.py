@@ -33,15 +33,14 @@ def get_recycling_tips(waste_type):
 
     try:
 
-        API_URL = "https://router.huggingface.co/v1/chat/completions"
+        API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-large"
 
         headers = {
-            "Authorization": f"Bearer {API_KEY}",
-            "Content-Type": "application/json"
+            "Authorization": f"Bearer {API_KEY}"
         }
 
         prompt = f"""
-        - Jenis sampah: {waste_type}
+        - Jenis sampah: {waste_type} 
         - Kategori sampah: (organik, anorganik, atau berbahaya) 
         - Klasifikasi jenis sampah: (dapat didaur ulang/dibakar/tidak dibakar/berbahaya) 
         - Panduan penanganan sampah: (dalam bullet point yang singkat) 
@@ -49,14 +48,7 @@ def get_recycling_tips(waste_type):
         """
 
         payload = {
-            "model": "meta-llama/Llama-3.1-8B-Instruct",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "max_tokens": 300
+            "inputs": prompt
         }
 
         response = requests.post(
@@ -65,9 +57,12 @@ def get_recycling_tips(waste_type):
             json=payload
         )
 
+        print(response.status_code)
+        print(response.text)
+
         data = response.json()
 
-        return data["choices"][0]["message"]["content"]
+        return data[0]["generated_text"]
 
     except Exception as e:
 
