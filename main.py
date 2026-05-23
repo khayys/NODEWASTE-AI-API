@@ -27,16 +27,17 @@ app.add_middleware(
 # LOAD ENV
 load_dotenv()
 
-API_KEY = os.getenv("HF_API_KEY").strip()
+API_KEY = os.getenv("OR_API_KEY").strip()
 
 def get_recycling_tips(waste_type):
 
     try:
 
-        API_URL = "https://api-inference.huggingface.co/models/gpt2"
+        API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
         headers = {
-            "Authorization": f"Bearer {API_KEY}"
+            "Authorization": f"Bearer {os.getenv('OR_API_KEY')}",
+            "Content-Type": "application/json"
         }
 
         prompt = f"""
@@ -48,26 +49,35 @@ def get_recycling_tips(waste_type):
         """
 
         payload = {
-            "inputs": prompt
+            "model": "meta-llama/llama-3.1-8b-instruct",
+
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+
+            "max_tokens": 300
         }
 
         response = requests.post(
             API_URL,
             headers=headers,
-            json=payload
+            json=payload,
+            timeout=30
         )
-
-        print(response.status_code)
-        print(response.text)
 
         data = response.json()
 
-        return data[0]["generated_text"]
+        print(data)
+
+        return data["choices"][0]["message"]["content"]
 
     except Exception as e:
 
-        return f"Error HuggingFace: {str(e)}"
-
+        return f"Error OpenRouter: {str(e)}"
+    
 # LOAD MODEL
 MODEL_PATH = 'best_model_custom.keras'
 
