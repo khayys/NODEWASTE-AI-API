@@ -60,9 +60,10 @@ def get_recycling_tips(waste_type):
         }}
 
         Rules:
-        - PANDUAN SISTEM PENGOLAHAN SAMPAH DI JEPANG: https://www.city.tenry.nara.jp/material/files/group/57/pamphlet-ind.pdf
+        - PANDUAN SISTEM PENGOLAHAN SAMPAH DI JEPANG berdasarkan: https://www.city.tenry.nara.jp/material/files/group/57/pamphlet-ind.pdf
+        - kategori kaleng aerosol harus masuk ke kategori berbahaya
         - kategori sampah hanya boleh: (berdasarkan sistem pengolahan sampah di jepang)
-          organik / anorganik / berbahaya
+          organik / anorganik / berbahaya  
 
         - klasifikasi jenis sampah hanya boleh (berdasarkan sistem pengolahan sampah di jepang):
           daur ulang / dibakar / tidak dibakar / berbahaya
