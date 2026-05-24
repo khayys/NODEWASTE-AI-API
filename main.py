@@ -66,7 +66,7 @@ def get_recycling_tips(waste_type):
         - klasifikasi jenis sampah hanya boleh (berdasarkan sistem pengolahan sampah di jepang):
           daur ulang / dibakar / tidak dibakar / berbahaya
         
-        - panduan penanganan sampah dalam bullet point yang menjelaskan cara menangani sampah tersebut agar proses selanjutnya lebih mudah. Untuk panduan bebas berjumlah berapapun
+        - panduan penanganan sampah dalam bullet point yang menjelaskan cara menangani sampah tersebut agar proses selanjutnya lebih mudah. Untuk panduan bebas berjumlah berapapun. NOTE bahwa panduan ini hanya untuk panduan PEMISAHAN sampah, bukan penanganan hingga akhir
         - letakkan di kantong hanya boleh:
           dibakar / daur ulang / tidak dibakar / berbahaya
 
